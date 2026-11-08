@@ -1,0 +1,898 @@
+/* ==========================================================================
+   Portfolio stylesheet — A A D Dinithi Dulasha
+   --------------------------------------------------------------------------
+   1.  Design tokens (colours, shadows) + dark theme
+   2.  Base / reset
+   3.  Layout (container, sections, grids, cards)
+   4.  Components: buttons, pills, icons
+   5.  Navigation
+   6.  Hero
+   7.  About (interest slider)
+   8.  Skills
+   9.  Carousel (shared by Projects and Certificates)
+   10. Projects + project dialog
+   11. Certificates
+   12. Contact
+   13. Footer + back-to-top
+   14. Print
+   ========================================================================== */
+
+
+/* 1. Design tokens
+   ========================================================================== */
+:root {
+  --bg: #f2f4ef;
+  --surface: #ffffff;
+  --surface2: #e6ebe3;
+  --text: #26352d;
+  --muted: #647269;
+  --sage: #66816d;
+  --sage-dark: #385644;
+  --walnut: #684a38;
+  --amber: #d99b3d;
+  --border: #d9e0d7;
+  --accent: #66816d;
+  --shadow: 0 14px 40px rgba(37, 55, 43, 0.08);
+
+  --radius-card: 22px;
+  --radius-pill: 999px;
+  --carousel-gap: 16px;
+}
+
+/* Dark theme: toggled by adding the "dark" class to <body> (see js/main.js). */
+body.dark {
+  --bg: #18211c;
+  --surface: #222d26;
+  --surface2: #2d3a31;
+  --text: #eef3ed;
+  --muted: #b2beb4;
+  --sage: #9bb8a0;
+  --sage-dark: #b5d2b8;
+  --walnut: #c6a48a;
+  --amber: #efbd68;
+  --border: #3a493e;
+  --accent: #4f6b55;
+  --shadow: 0 14px 40px rgba(0, 0, 0, 0.2);
+}
+
+
+/* 2. Base / reset
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.65 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  transition: background 0.25s, color 0.25s;
+}
+
+img {
+  max-width: 100%;
+  height: auto; /* width/height attributes in the HTML reserve space; CSS keeps the ratio */
+}
+
+a {
+  color: var(--sage-dark);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+body.dark a {
+  color: var(--sage);
+}
+
+h1 {
+  font-size: clamp(2.6rem, 6vw, 4.8rem);
+  line-height: 1.04;
+  letter-spacing: -0.05em;
+  margin: 14px 0 18px;
+}
+
+h1 span {
+  color: var(--sage-dark);
+}
+
+h2 {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin: 6px 0 10px;
+}
+
+/* Visible only to keyboard users; lets them jump past the navigation. */
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -60px;
+  z-index: 100;
+  padding: 10px 16px;
+  border-radius: var(--radius-pill);
+  background: var(--sage-dark);
+  color: #fff;
+  font-weight: 650;
+}
+
+.skip-link:focus {
+  top: 12px;
+  text-decoration: none;
+}
+
+body.dark .skip-link {
+  color: #18211c;
+}
+
+/* Inline SVG sprite container (icons are defined once in index.html). */
+.svg-sprite {
+  display: none;
+}
+
+
+/* 3. Layout
+   ========================================================================== */
+.container {
+  width: min(1100px, 92%);
+  margin: auto;
+}
+
+section {
+  padding: 52px 0;
+}
+
+.section-head {
+  margin-bottom: 25px;
+}
+
+.kicker {
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--walnut);
+  font-weight: 800;
+}
+
+.section-intro {
+  color: var(--muted);
+  max-width: 720px;
+  margin: 0;
+}
+
+.grid {
+  display: grid;
+  gap: 18px;
+}
+
+.grid.two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 24px;
+  box-shadow: var(--shadow);
+}
+
+.card h3 {
+  margin: 0 0 8px;
+  font-size: 1.12rem;
+}
+
+.card p {
+  margin: 8px 0;
+  color: var(--muted);
+}
+
+.meta {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.small-note {
+  font-size: 0.84rem;
+  color: var(--muted);
+}
+
+.feature-list {
+  padding-left: 20px;
+  color: var(--muted);
+}
+
+@media (max-width: 760px) {
+  section {
+    padding: 38px 0;
+  }
+
+  .grid.two {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* 4. Components: buttons, pills, icons
+   ========================================================================== */
+button,
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  padding: 10px 16px;
+  background: var(--sage-dark);
+  color: #fff;
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+button.secondary,
+.button.secondary {
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.button:hover {
+  text-decoration: none;
+}
+
+/* Dark theme button colours. These selectors are more specific than the
+   component rules below, so they apply to every button in dark mode. */
+body.dark button,
+body.dark .button {
+  background: var(--sage-dark);
+  color: #18211c;
+}
+
+body.dark button.secondary,
+body.dark .button.secondary {
+  background: var(--surface2);
+  color: var(--text);
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 14px;
+}
+
+.pill {
+  font-size: 0.86rem;
+  border-radius: var(--radius-pill);
+  padding: 7px 11px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+}
+
+.status {
+  display: inline-block;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 5px 10px;
+  font-size: 0.78rem;
+  font-weight: 750;
+}
+
+/* Icons come from the SVG sprite: <svg class="icon"><use href="#icon-name"/></svg> */
+.icon {
+  display: block;
+  width: 21px;
+  height: 21px;
+  fill: currentColor;
+}
+
+/* The LinkedIn glyph is plain text styled to match the SVG icons. */
+.linkedin-mark {
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+/* Round icon button used in the hero and the contact list. */
+.icon-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--sage-dark);
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+body.dark .icon-circle {
+  color: var(--sage);
+}
+
+
+/* 5. Navigation
+   ========================================================================== */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  opacity: 0.97;
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 14px 0;
+}
+
+.brand {
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+
+.brand-dot {
+  color: var(--amber);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 18px;
+  font-size: 0.9rem;
+}
+
+.nav-links a {
+  color: var(--text);
+}
+
+@media (max-width: 760px) {
+  .nav-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-links {
+    gap: 12px;
+  }
+}
+
+
+/* 6. Hero
+   ========================================================================== */
+.hero {
+  display: grid;
+  grid-template-columns: 1.45fr 0.75fr;
+  align-items: center;
+  gap: 48px;
+  padding: 76px 0 58px;
+}
+
+.eyebrow {
+  color: var(--walnut);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  font-size: 0.78rem;
+}
+
+.lead {
+  font-size: 1.13rem;
+  color: var(--muted);
+  max-width: 650px;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.hero-socials {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.hero-socials a:hover,
+.contact-link:hover .icon-circle {
+  transform: translateY(-3px);
+  background: var(--surface2);
+  text-decoration: none;
+}
+
+.profile-wrap {
+  position: relative;
+  max-width: 340px;
+  margin: auto;
+}
+
+/* Decorative amber panel behind the portrait. */
+.profile-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 18px -14px -14px 18px;
+  background: var(--amber);
+  border-radius: 32px;
+  opacity: 0.8;
+}
+
+.profile {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: center 35%;
+  border-radius: 28px;
+  border: 5px solid var(--surface);
+  box-shadow: var(--shadow);
+}
+
+@media (max-width: 760px) {
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 34px;
+    padding-top: 48px;
+  }
+
+  .profile-wrap {
+    max-width: 260px;
+    grid-row: 1;
+  }
+}
+
+
+/* 7. About: interest slider
+   ========================================================================== */
+.interest-slider {
+  margin-top: 14px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.interest-track {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 52px;
+  overflow: hidden;
+}
+
+.interest-name {
+  display: block;
+  font-size: 1.08rem;
+  font-weight: 750;
+  color: var(--text);
+  white-space: normal;
+}
+
+/* js/main.js re-adds this class each time the interest text changes. */
+.interest-name.is-entering {
+  animation: interest-slide-in 0.65s ease both;
+}
+
+@keyframes interest-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(38px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interest-name.is-entering {
+    animation: none;
+  }
+}
+
+
+/* 8. Skills
+   ========================================================================== */
+.skill-logo-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.skill-logo-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 11px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface2);
+  color: var(--text);
+  font-size: 0.91rem;
+  line-height: 1.2;
+}
+
+.skill-logo-pill img {
+  width: 25px;
+  height: 25px;
+  flex: 0 0 25px;
+  object-fit: contain;
+}
+
+/* Fallback badge for skills without a logo (e.g. "SQL", "UI"). */
+.text-logo {
+  display: grid;
+  place-items: center;
+  width: 25px;
+  height: 25px;
+  flex: 0 0 25px;
+  border-radius: 7px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+@media (max-width: 560px) {
+  .skill-logo-pill {
+    font-size: 0.86rem;
+    padding: 7px 9px;
+  }
+
+  .skill-logo-pill img {
+    width: 23px;
+    height: 23px;
+    flex-basis: 23px;
+  }
+}
+
+
+/* 9. Carousel (shared by Projects and Certificates)
+   --------------------------------------------------------------------------
+   Markup: .carousel > .carousel-controls + .scroll-row
+   Behaviour (arrow buttons, disabled states): js/main.js -> initCarousel()
+   ========================================================================== */
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin: 0 0 12px;
+}
+
+.carousel-controls button {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: var(--radius-pill);
+  padding: 9px 15px;
+  font-weight: 400;
+  box-shadow: var(--shadow);
+}
+
+.carousel-controls button:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+.scroll-row {
+  display: flex;
+  gap: var(--carousel-gap);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scroll-behavior: smooth;
+  padding: 4px 4px 18px;
+  scrollbar-width: auto;
+  scrollbar-color: var(--sage) var(--surface2);
+}
+
+.scroll-row > * {
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+.scroll-row::-webkit-scrollbar {
+  height: 12px;
+}
+
+.scroll-row::-webkit-scrollbar-track {
+  background: var(--surface2);
+  border-radius: var(--radius-pill);
+}
+
+.scroll-row::-webkit-scrollbar-thumb {
+  background: var(--sage);
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--surface2);
+}
+
+
+/* 10. Projects
+   --------------------------------------------------------------------------
+   Each project is ONE <article class="card project-card">. In the scrolling
+   row only the header (title + tech line), image and "Explore more" button are
+   shown. The full card, including .project-details, is cloned into the dialog.
+   ========================================================================== */
+.project-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.project-image {
+  display: block;
+  width: 100%;
+  max-height: 420px;
+  margin: 16px 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface2);
+  object-fit: contain;
+}
+
+.github-button {
+  gap: 10px;
+}
+
+.github-button .icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* --- Compact card (inside the scrolling row) --- */
+.scroll-row .project-card {
+  flex: 0 0 min(380px, 84%);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow: hidden;
+}
+
+.scroll-row .project-card .project-top > div {
+  min-height: 6.5rem; /* keeps images aligned when titles wrap onto 2 lines */
+}
+
+.scroll-row .project-card .project-top h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.35;
+}
+
+.scroll-row .project-card .project-top .meta {
+  margin: 4px 0 0;
+}
+
+.scroll-row .project-card .status,
+.scroll-row .project-card .project-details {
+  display: none;
+}
+
+.scroll-row .project-card .project-image {
+  height: 200px;
+  max-height: none;
+  margin: 0;
+  cursor: pointer;
+}
+
+.project-more {
+  margin-top: auto;
+  align-self: flex-start;
+}
+
+/* --- Project details dialog (native <dialog>) --- */
+.project-dialog {
+  width: min(900px, 92vw);
+  max-height: 92vh;
+  padding: 0;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow);
+}
+
+.project-dialog::backdrop {
+  background: rgba(15, 22, 18, 0.6);
+}
+
+.project-dialog .card {
+  margin: 0;
+  padding: 28px;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.project-dialog-close {
+  position: sticky;
+  top: 12px;
+  z-index: 2;
+  float: right;
+  width: 40px;
+  height: 40px;
+  margin: 12px 12px 0 0;
+  padding: 0;
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+/* Stop the page behind the dialog from scrolling. */
+body.dialog-open {
+  overflow: hidden;
+}
+
+@media (max-width: 560px) {
+  .project-dialog {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    border-radius: 0;
+  }
+
+  .project-dialog .card {
+    padding: 20px;
+  }
+}
+
+
+/* 11. Certificates
+   ========================================================================== */
+.cert-card {
+  flex: 0 0 min(300px, 84%);
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  overflow: hidden;
+}
+
+.cert-card h3 {
+  margin: 0 0 10px;
+  font-size: 1.02rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.cert-card p {
+  margin: 7px 0;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+/* The image link is pushed to the bottom so all certificates line up. */
+.cert-link {
+  display: block;
+  margin-top: auto;
+  padding-top: 12px;
+  cursor: zoom-in;
+}
+
+.cert-image {
+  display: block;
+  width: 100%;
+  height: 210px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface2);
+  object-fit: contain;
+}
+
+
+/* 12. Contact
+   ========================================================================== */
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--border);
+  overflow-wrap: anywhere;
+}
+
+.contact-link:hover {
+  text-decoration: none;
+}
+
+
+/* 13. Footer + back-to-top
+   ========================================================================== */
+.site-footer {
+  padding: 28px 0;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.back-to-top {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 40;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 1.25rem;
+  line-height: 1;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity 0.25s, transform 0.25s, visibility 0.25s;
+}
+
+.back-to-top.show {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.back-to-top:hover {
+  transform: translateY(-3px);
+}
+
+@media (max-width: 560px) {
+  .back-to-top {
+    right: 14px;
+    bottom: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .back-to-top {
+    transition: none;
+  }
+}
+
+
+/* 14. Print
+   ========================================================================== */
+@media print {
+  .site-nav,
+  .hero-actions,
+  .back-to-top,
+  #theme-toggle {
+    display: none;
+  }
+
+  body {
+    background: #fff;
+    color: #222;
+  }
+
+  .card {
+    box-shadow: none;
+    break-inside: avoid;
+  }
+}
